@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 import datetime as dt
 
 # Create your views here.
@@ -11,14 +11,7 @@ def news_of_day(request):
     date = dt.date.today()
     # Convert date object to find the eaxct date
     day = convert_date(date)
-    html = f'''
-        <html>
-            <body>
-                <h1> News for {day} {date.day}-{date.month}-{date.year}</h1>
-            </body>
-        </html>
-            '''
-    return HttpResponse(html)
+    return render(request, 'welcome.html')
 
 def convert_date(dates):
     # get wekday number for the date
@@ -29,5 +22,24 @@ def convert_date(dates):
     # Returning the actual day
     day = days[day_number]
     return day
+
+def past_days_news(request, past_date):
+
+    try:
+        # Converts data from the string url
+        date = dt.datetime.strftime(past_date, '%Y-%m-%d').date()
+    except ValueError:
+        # Raise 404 error 
+        raise Http404()
+    day = convert_date(date)
+    html = f'''
+        <html>
+            <body>
+                <h1>News for {day} {date.day}-{date.month}-{date.year}</h1>
+            </body>
+        </html>
+            '''
+    return HttpResponse(html)
+
 
    
