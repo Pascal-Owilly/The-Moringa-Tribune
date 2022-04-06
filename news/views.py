@@ -32,14 +32,8 @@ def past_days_news(request, past_date):
         # Raise 404 error 
         raise Http404()
     day = convert_date(date)
-    html = f'''
-        <html>
-            <body>
-                <h1>News for {day} {date.day}-{date.month}-{date.year}</h1>
-            </body>
-        </html>
-            '''
-    return HttpResponse(html)
+
+    return render(request, 'welcome.html')
 
 
    
